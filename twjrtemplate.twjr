@@ -1,0 +1,527 @@
+\input texinfo @c -*- texinfo -*-
+
+@c ==================================================
+@c NAME:    |TEMPLATE FOR TEXIWEBJR.TWJR FILE|
+@c VERSION: |2017-12-10 VERSION 0.0.2|
+@c DESC:    |based upon .../texiwebjr/template.twjr|
+@c BY:      LOLH
+@c NOTES:   
+@c ==================================================
+
+@c %**start of header
+@c edit
+@setfilename twjrtemplate.info
+@c edit
+@settitle TEXIWEBJR TEMPLATE FILE
+@c %**end of header
+
+@c ====================
+@c texiwebjr specials
+@c ====================
+@c Changes how xref titles are quoted.
+@dquotexrefs
+
+@c Lets braces in index entries work.
+@allowindexbraces
+
+@ifclear FORPRINT
+@pdflinkcolor
+@urllinkcolor
+@hideurls
+@end ifclear
+
+@c some special symbols
+@ifnottex
+@macro ii{text}
+@i{\text\}
+@end macro
+@end ifnottex
+
+@c merge the function and variable indexes into the concept index
+@c do so without the code font, and in the index entries do the
+@c font management ourselves.  Also merge in the chunk definition
+@c and reference entries, which jrweave creates for us.
+@ifnothtml
+@synindex fn cp
+@synindex vr cp
+@synindex cd cp
+@synindex cr cp
+@end ifnothtml
+
+@c ====================
+@c DOCUMENT CONSTANTS
+@c ====================
+@set UPDATE-MONTH |MONTH, YYYY|
+@set EDITION |0.n|
+@set AUTHOR |Author|
+@set TITLE |Long Title|
+@set SHORTTITLE twjrtemplate
+@set SUBTITLE |Subtitle|
+@set COPYRIGHT_YEAR |Year|
+@set COPYRIGHT_HOLDER |Copyright Holder|
+
+@iftex
+@set DOCUMENT book
+@set CHAPTER chapter
+@set APPENDIX appendix
+@set SECTION section
+@set SUBSECTION subsection
+@end iftex
+@ifhtml
+@set DOCUMENT Web page
+@set CHAPTER chapter
+@set APPENDIX appendix
+@set SECTION section
+@set SUBSECTION subsection
+@end ifhtml
+@ifinfo
+@set DOCUMENT Info file
+@set CHAPTER major node
+@set APPENDIX major node
+@set SECTION minor node
+@set SUBSECTION node
+@end ifinfo
+@ifdocbook
+@set DOCUMENT book
+@set CHAPTER chapter
+@set APPENDIX appendix
+@set SECTION section
+@set SUBSECTION subsection
+@end ifdocbook
+
+@c ====================
+@c FINALOUT
+@c ====================
+@c If "finalout" is commented out, the printed output will show
+@c black boxes that mark lines that are too long.  Thus, it is
+@c unwise to comment it out when running a master in case there are
+@c overfulls which are deemed okay.
+
+@iftex
+@c |@finalout|
+@end iftex
+
+@c ====================
+@c SUMMARY & COPYRIGHT INFORMATION
+@c ====================
+@copying
+@c insert a short summary describing and identifying this document in a
+@c sentence or two, and add the copyright notice and copying permisions
+
+This document is @value{TITLE} @sp 2
+This document does @dots{}
+
+Copyright @copyright{} @value{COPYRIGHT_YEAR} LOLH @*
+by @value{COPYRIGHT_HOLDER} @*
+All Rights Reserved
+
+@quotation
+Permission is granted to @dots{}
+@end quotation
+
+@sp 2
+This is Edition @value{EDITION} of @cite{@value{TITLE}}.
+
+@c use @insertcopying later to 'emit' this copying information in a TeX
+@c or plain text document; add to the Top node for use in Info or HTML file
+@end copying
+
+@c ====================
+@c TITLEPAGE, COPYRIGHT PAGE, TOC PAGE, HEADINGS
+@c ====================
+@titlepage
+
+@title @value{TITLE}
+@subtitle @value{SUBTITLE}
+@c @subtitle Additional Subtitle
+@author @value{AUTHOR}
+
+@c place the copyright information on the backside of the titlepage
+@c (printed manual only)
+@page
+@vskip 0pt plus 1filll
+@insertcopying
+
+Published by @dots{}
+
+@end titlepage
+@c page numbering and headings start after end of titlepage
+
+@iftex
+@headings off
+@evenheading @thispage @| @value{DRAFT} @| @strong{@value{SHORTTITLE}}
+@oddheading  @strong{@thischapter} @| @value{DRAFT} @| @thispage
+@end iftex
+
+@c TOC in the printed manual
+@c consider placing TOC after the main menu
+@c consider including summarycontents here or after main menu
+@c @summarycontents
+@contents
+
+@c ====================
+@c TOP NODE, MASTER MENU
+@c ====================
+@ifnottex
+@ifnotdocbook
+@ifnotxml
+@node Top
+@top !Top Description|
+
+@insertcopying
+@end ifnotxml
+@end ifnotdocbook
+@end ifnottex
+
+@c ====================
+@c START OF BODY
+@c ====================
+
+@c Preface and Foreward come right after Top node in 'unnumbered' sections
+@c consider commenting out Foreward and Preface
+@menu
+* Foreword::
+* Preface::
+* Introduction::
+* |Chapter One|::
+* Appendix One::
+* Meta Appendix::
+* Code Chunk Summaries::
+* Bibliography::
+* Concept Index::
+* Index::
+
+@detailmenu
+ --- The Detailed Node Listing ---
+
+Preface
+
+* Overview::
+* Conventions::
+* Acknowledgements::
+
+|Chapter One|
+
+* |Section One|::
+
+Meta (Makefile) Appendix
+
+* Meta Definitions::
+
+Meta Makefile Definitions
+
+* Meta Constants::
+* Makefile Default::
+* Meta Tangle::
+* Meta Weave::
+* Meta Info::
+* Meta Clean::
+* Meta Dist Clean::
+* Meta Move JS::
+
+Meta Constant Definitions
+
+* Directory Definitions::
+* Filename Definitions::
+
+Code Chunk Summaries
+
+* File Definitions::
+* Code Chunk Definitions::
+* Code Chunk References::
+
+@end detailmenu
+@end menu
+
+@node Foreword
+@unnumbered Foreword
+
+Foreward text...
+
+@node Preface
+@unnumbered Preface
+
+Preface text...
+
+@menu
+* Overview::
+* Conventions::
+* Acknowledgements::
+@end menu
+
+@node Overview
+@unnumberedsec Overview
+
+Text and chapter by chapter description here.
+
+@node Conventions
+@unnumberedsec Conventions
+
+@c Copied mostly verbatim from the gawk manual.
+
+@cindex Texinfo document formatting language
+This @value{DOCUMENT} is written in an enhanced version of
+@uref{http://www.gnu.org/software/texinfo/, Texinfo},
+the GNU documentation formatting language.
+A single Texinfo source file is used to produce both the printed and online
+versions of a program's documentation.
+@ifnotinfo
+Because of this, the typographical conventions
+are slightly different than in other books you may have read.
+@end ifnotinfo
+
+Examples you would type at the command-line are preceded by the common
+shell primary and secondary prompts, @samp{$} and @samp{>}.  Input that
+you type is shown @kbd{like this}.  Output from the command is preceded
+by the glyph ``@print{}''.  This typically represents the command's
+standard output.  Error messages, and other output on the command's
+standard error, are preceded by the glyph ``@error{}''.  For example:
+
+@example
+$ @kbd{echo hi on stdout}
+@print{} hi on stdout
+$ @kbd{echo hello on stderr 1>&2}
+@error{} hello on stderr
+@end example
+
+@ifnotinfo
+In the text, command names appear in @code{this font}, while code segments
+appear in the same font and quoted, @samp{like this}.  Options look
+like this: @option{-f}.  Some things are emphasized @emph{like this},
+and if a point needs to be made strongly, it is done @strong{like this}.
+The first occurrence of a new term is usually its @dfn{definition} and
+appears in the same font as the previous occurrence of ``definition''
+in this sentence.  Finally, file names are indicated like this:
+@file{/path/to/our/file}.
+@end ifnotinfo
+
+@node Acknowledgements
+@unnumberedsec Acknowledgements
+
+Acknowledgments here...
+
+@c ====================
+@c MAIN BODY NODES
+@c ====================
+
+@node Introduction
+@chapter Introduction
+
+Introduction...
+
+@node |Chapter One|
+@chapter |Chapter One|
+@cindex chapter one
+
+Chapter one...
+
+@menu
+* |Section One|::
+@end menu
+
+@node |Section One|
+@section |Chapter One Section One|
+@cindex section one
+
+Chapter One Section one...
+
+@c ====================
+@c APPENDICES
+@c ====================
+
+@node Appendix One
+@appendix Appendix One
+
+@node Meta Appendix
+@appendix Meta (Makefile) Appendix
+
+@menu
+* Meta Definitions::
+@end menu
+
+@node Meta Definitions
+@appendixsec Meta Makefile Definitions
+
+@(Makefile@)=
+@<Makefile Constant Definitions@>
+@<Makefile Default Target@>
+@<Makefile Tangle@>
+@<Makefile Weave@>
+@<Makefile Info@>
+@<Makefile Clean@>
+@<Makefile Dist Clean@>
+@<Makefile Move JS To Source@>
+@
+
+@menu
+* Meta Constants::
+* Makefile Default::
+* Meta Tangle::
+* Meta Weave::
+* Meta Info::
+* Meta Clean::
+* Meta Dist Clean::
+* Meta Move JS::
+@end menu
+
+@node Meta Constants
+@appendixsubsec Meta Constant Definitions
+
+@<Makefile Constant Definitions@>=
+@<Makefile Directory Definitions@>
+@<Makefile Filename Definitions@>
+@
+
+@menu
+* Directory Definitions::
+* Filename Definitions::
+@end menu
+
+@node Directory Definitions
+@appendixsubsubsec Makefile Directory Definitions
+
+@<Makefile Directory Definitions@>=
+SOURCE_DIR := ./src
+
+@
+
+@node Filename Definitions
+@appendixsubsubsec Makefile Filename Definitions
+
+@<Makefile Filename Definitions@>=
+FILENAME := twjrtemplate
+TWJR_FILENAME := ${FILENAME}.twjr
+TEXI_FILENAME := ${FILENAME}.texi
+INFO_FILENAME := ${FILENAME}.info
+
+@
+
+@node Makefile Default
+@appendixsubsec Makefile Default Rule
+
+@<Makefile Default Target@>=
+.Phony : all
+all : tangle weave
+
+@
+
+@node Meta Tangle
+@appendixsubsec Meta Tangle Defintion
+
+@<Makefile Tangle@>=
+.Phony : tangle
+tangle :
+	jrtangle ${TWJR_FILENAME}
+
+@
+
+@node Meta Weave
+@appendixsubsec Meta Weave Defintion
+
+@<Makefile Weave@>=
+.Phony : weave
+weave : ${TEXI_FILENAME}
+
+${TEXI_FILENAME} : ${TWJR_FILENAME}
+	jrweave ${TWJR_FILENAME} > ${TEXI_FILENAME}
+
+@
+
+@node Meta Info
+@appendixsubsec Meta Makefile Info
+
+@<Makefile Info@>=
+.Phony : info
+info : ${INFO_FILENAME}
+
+${INFO_FILENAME} : ${TEXI_FILENAME}
+	makeinfo ${TEXI_FILENAME}
+
+@
+
+@node Meta Clean
+@appendixsubsec Meta Clean Definition
+
+@<Makefile Clean@>=
+.Phony : clean
+clean :
+	rm -f *~
+
+@
+
+@node Meta Dist Clean
+@appendixsubsec Meta Dist Clean Definition
+
+@<Makefile Dist Clean@>=
+.Phony : dist-clean
+dist-clean : clean
+	rm -f *.texi
+	rm -f *.info
+
+@
+
+@node Meta Move JS
+@appendixsubsec Meta Move JS To Source
+
+@<Makefile Move JS To Source@>=
+.Phony : move-to-source
+move-to-source : | ${SOURCE_DIR}
+	if test -a *.js; then for file in *.js; do mv $${file} ${SOURCE_DIR}; done; fi
+
+@
+
+@node Code Chunk Summaries
+@appendix Code Chunk Summaries
+
+This @value{APPENDIX} presents alphabetical lists of
+all the file definitions, the code chunk definitions,
+and the code chunk references.
+
+@menu
+* File Definitions::
+* Code Chunk Definitions::
+* Code Chunk References::
+@end menu
+
+@node File Definitions
+@appendixsec Source File Definitions
+
+@print_file_defs
+
+@node Code Chunk Definitions
+@appendixsec Code Chunk Definitions
+
+@print_code_defs
+
+@node Code Chunk References
+@appendixsec Code Chunk References
+
+@print_code_refs
+
+@c ====================
+@c BIBLIOGRAPHY; INDEX; END
+@c ====================
+
+@node Bibliography
+@unnumbered Bibliography
+
+@node Concept Index
+@unnumbered Index
+
+@node Index
+@unnumbered Index
+
+@printindex cp
+
+@bye
+
+@c ====================
+@c TODOs
+@c ====================
+
+1. Create a script to fill in named variables
+1.1 twjr
+1.1.1 init [--dir <directory>]
+1.1.2 config
+1.1.3 weave [--info --pdf --html --xml --docbook]
+1.1.4 tangle [--file <filename>]
