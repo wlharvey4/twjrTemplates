@@ -2,7 +2,7 @@
 
 @c ==================================================
 @c NAME:    |TEMPLATE FOR TEXIWEBJR.TWJR FILE|
-@c VERSION: |2017-12-10 VERSION 0.0.2|
+@c VERSION: |2017-12-16 VERSION 0.0.3|
 @c DESC:    |based upon .../texiwebjr/template.twjr|
 @c BY:      LOLH
 @c NOTES:   
@@ -206,20 +206,22 @@ Preface
 
 Meta (Makefile) Appendix
 
-* Meta Definitions::
+* Makefile::
 
-Meta Makefile Definitions
+Makefile Definitions
 
-* Meta Constants::
-* Makefile Default::
-* Meta Tangle::
-* Meta Weave::
-* Meta Info::
-* Meta Clean::
-* Meta Dist Clean::
-* Meta Move JS::
+* Makefile Constants::
+* Makefile Default Targets::
+* Makefile Tangle::
+* Makefile Weave::
+* Makefile Info::
+* Makefile Clean::
+* Makefile Dist Clean::
+* Makefile Move Hook::
+* Makefile Move JS::
+* Makefile Move HTML::
 
-Meta Constant Definitions
+Makefile Constants
 
 * Directory Definitions::
 * Filename Definitions::
@@ -336,38 +338,43 @@ Chapter One Section one...
 @appendix Meta (Makefile) Appendix
 
 @menu
-* Meta Definitions::
+* Makefile::
 @end menu
 
-@node Meta Definitions
-@appendixsec Meta Makefile Definitions
+@node Makefile Definitions
+@appendixsec Makefile Initial Definitions
 
 @(Makefile@)=
-@<Makefile Constant Definitions@>
-@<Makefile Default Target@>
+@<Makefile Constants@>
+@<Makefile Default Targets@>
 @<Makefile Tangle@>
 @<Makefile Weave@>
 @<Makefile Info@>
 @<Makefile Clean@>
 @<Makefile Dist Clean@>
+@<Makefile Directory Creation@>
+@<Makefile Move Hook@>
 @<Makefile Move JS To Source@>
+@<Makefile Move HTML@>
 @
 
 @menu
-* Meta Constants::
-* Makefile Default::
-* Meta Tangle::
-* Meta Weave::
-* Meta Info::
-* Meta Clean::
-* Meta Dist Clean::
-* Meta Move JS::
+* Makefile Constants::
+* Makefile Default Targets::
+* Makefile Tangle::
+* Makefile Weave::
+* Makefile Info::
+* Makefile Clean::
+* Makefile Dist Clean::
+* Makefile Move Hook::
+* Makefile Move JS::
+* Makefile Move HTML::
 @end menu
 
-@node Meta Constants
-@appendixsubsec Meta Constant Definitions
+@node Makefile Constants
+@appendixsubsec Makefile Constant Definitions
 
-@<Makefile Constant Definitions@>=
+@<Makefile Constants@>=
 @<Makefile Directory Definitions@>
 @<Makefile Filename Definitions@>
 @
@@ -381,7 +388,10 @@ Chapter One Section one...
 @appendixsubsubsec Makefile Directory Definitions
 
 @<Makefile Directory Definitions@>=
-SOURCE_DIR := ./src
+PREFIX := .
+SOURCE_DIR := ${PREFIX}/src
+PUBLIC_DIR := ${PREFIX}/public
+HTML_DIR := ${PREFIX}/html
 
 @
 
@@ -396,17 +406,17 @@ INFO_FILENAME := ${FILENAME}.info
 
 @
 
-@node Makefile Default
-@appendixsubsec Makefile Default Rule
+@node Makefile Default Targets
+@appendixsubsec Makefile Default Targets
 
-@<Makefile Default Target@>=
+@<Makefile Default Targets@>=
 .Phony : all
 all : tangle weave
 
 @
 
-@node Meta Tangle
-@appendixsubsec Meta Tangle Defintion
+@node Makefile Tangle
+@appendixsubsubsec Makefile Tangle
 
 @<Makefile Tangle@>=
 .Phony : tangle
@@ -415,8 +425,8 @@ tangle :
 
 @
 
-@node Meta Weave
-@appendixsubsec Meta Weave Defintion
+@node Makefile Weave
+@appendixsubsubsec Meta Weave
 
 @<Makefile Weave@>=
 .Phony : weave
@@ -427,8 +437,8 @@ ${TEXI_FILENAME} : ${TWJR_FILENAME}
 
 @
 
-@node Meta Info
-@appendixsubsec Meta Makefile Info
+@node Makefile Info
+@appendixsubsubsec Makefile Info
 
 @<Makefile Info@>=
 .Phony : info
@@ -439,8 +449,11 @@ ${INFO_FILENAME} : ${TEXI_FILENAME}
 
 @
 
-@node Meta Clean
-@appendixsubsec Meta Clean Definition
+@node Makefile Clean Targets
+@appendixsubsec Makefile Clean Targets
+
+@node Makefile Clean
+@appendixsubsubsec Makefile Clean Definition
 
 @<Makefile Clean@>=
 .Phony : clean
@@ -449,8 +462,8 @@ clean :
 
 @
 
-@node Meta Dist Clean
-@appendixsubsec Meta Dist Clean Definition
+@node Makefile Dist Clean
+@appendixsubsubsec Meta Dist Clean Definition
 
 @<Makefile Dist Clean@>=
 .Phony : dist-clean
@@ -460,13 +473,54 @@ dist-clean : clean
 
 @
 
-@node Meta Move JS
-@appendixsubsec Meta Move JS To Source
+@node Makefile Directory Creation
+@appendixsubsec Makefile Directory Creation Targets
+
+@<Makefile Directory Creation@>=
+.Phony : ${SOURCE_DIR}
+${SOURCE_DIR} :
+	mkdir -p ${SOURCE_DIR}
+
+.Phony : ${PUBLIC_DIR}
+${PUBLIC_DIR} :
+	mkdir -p ${PUBLIC_DIR}
+
+.Phony : ${HTML_DIR}
+${HTML_DIR} :
+	mkdir -p ${HTML_DIR}
+
+@
+
+@node Makefile Move Targets
+@appendixsubsec Makefile Move Targets
+
+@node Makefile Move Hook
+@appendixsubsubsec Makefile Move Hook
+
+Use this hook for moving files to a different directory
+than Source; it will execute just prior to the next
+code block moving all .js files to Source.
+
+@<Makefile Move Hook@>=
+@
+
+@node Makefile Move JS
+@appendixsubsubsec Makefile Move JS To Source
 
 @<Makefile Move JS To Source@>=
-.Phony : move-to-source
-move-to-source : | ${SOURCE_DIR}
-	if test -a *.js; then for file in *.js; do mv $${file} ${SOURCE_DIR}; done; fi
+.Phony : move-js-to-source
+move-js-to-source : | ${SOURCE_DIR}
+	find ${PREFIX} -depth=1 -name \*.js -exec mv {} ${SOURCE_DIR} \;
+
+@
+
+@node Makefile Move HTML
+@appendixsubsubsec Makefile Move HTML
+
+@<Makefile Move HTML@>=
+.Phony : move-html
+move-html : | ${HTML_DIR}
+	find ${PREFIX} -depth=1 -name \*.html -exec mv {} ${HTML_DIR}\;
 
 @
 
