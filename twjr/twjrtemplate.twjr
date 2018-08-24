@@ -1,0 +1,643 @@
+\input texinfo @c -*- texinfo -*-
+
+@c ============================================================================
+@c NAME:    |TEMPLATE FOR TEXIWEBJR.TWJR FILE|
+@c VERSION: |2018-08-23 VERSION 0.0.5|
+@c DESC:    |based upon .../texiwebjr/template.twjr|
+@c BY:      LOLH
+@c NOTES:   See 'Writers and Editors',
+@c http://www.writersandeditors.com/preface__foreword__or_introduction__57375.htm
+@c ============================================================================
+
+@c Any command  that affects document  formatting as a  whole can go  into the
+@c header section
+
+@c %**start of header
+@setfilename |twjrtemplate.info|
+@settitle |TEXIWEBJR TEMPLATE FILE|
+@c @synindex
+@c @footnotestyle
+@c %**end of header
+
+@c ============================================================================
+@c TexiwebJr special macros:
+@c ----------------------------------------------------------------------------
+@c Additions to the Texinfo language to  `ease both the formatting job and some
+@c of the authoring work.'
+@c   
+@c   @dquotexrefs	This macro call changes how xref titles are quoted.
+@c   @allowindexbraces	This macro call lets braces in index entries work.
+@c ----------------------------------------------------------------------------
+@c   The follow two are new macro definitions  that can be used by an author in
+@c   a TexiwebJr source document:
+@c ----------------------------------------------------------------------------
+@c   @EMAIL{real, spelled}  hide email addresses in HTML output (not in TeX):
+@c   @FIXME(text}
+@c   @numberedchecks	    print numbers in the chunk names
+@c   @pdflinkcolor	    PDF viewer style
+@c   @urllinkcolor	    PDF viewer style
+@c   @hideurls
+@c   @ii{text}
+@c   @TWJR{Program Name}
+@c ============================================================================
+
+@dquotexrefs
+@allowindexbraces
+
+@c chunks are unnumbered by default;
+@c to print numbers in the chunk names,
+@c uncomment this macro call:
+@c ----------------------------------------------------------------------------
+@c @numberedchunks
+
+@c -DVI printing style (Texinfo default):
+@c   1) URLs shown inline in the text and
+@c   2) cross-references are printed in black
+@c -PDF viewer style: (twjr default)
+@c   both cross-references and URLs are formatted as
+@c   PDF links in a different color
+@c uncomment FORPRINT to set the DVI printing style
+@c ----------------------------------------------------------------------------
+@c @set FORPRINT 1
+@ifclear FORPRINT
+ @pdflinkcolor
+ @urllinkcolor
+ @hideurls
+@end ifclear
+
+@c uncomment FORPRINT and RELEASE to print chapters on odd pages
+@c ----------------------------------------------------------------------------
+@c @set RELEASE
+@ifset FORPRINT
+ @ifset RELEASE
+  @setchapternewpage odd
+ @end ifset
+@end ifset
+
+@c some special symbols
+@c ----------------------------------------------------------------------------
+@ifnottex
+ @macro ii{text}
+  @i{\text\}
+ @end macro
+@end ifnottex
+
+@c The name of the program.
+@c Setting it as a macro makes it easier to change later.
+@c ----------------------------------------------------------------------------
+@set TWJR @sc{ |Program Name@:| }
+
+@c merge  the function  and variable  indexes into  the concept  index; do  so
+@c without the  code font,  and in  the index entries  do the  font management
+@c ourselves.  Also merge in the chunk definition and reference entries, which
+@c Jrweave                  creates                   for                  us.
+@c ----------------------------------------------------------------------------
+@ifnothtml
+@synindex fn cp
+@synindex vr cp
+@synindex cd cp
+@synindex cr cp
+@end ifnothtml
+
+@c ====================
+@c DOCUMENT CONSTANTS
+@c ====================
+@set TITLE            |Long Title|
+@set SHORTTITLE       |twjrtemplate|
+@set SUBTITLE         |Subtitle|
+
+@set UPDATE-MONTH     |MONTH, YYYY|
+@set EDITION          |0.n|
+@set AUTHOR           |Author|
+@set COPYRIGHT_YEAR   |Year|
+@set COPYRIGHT_HOLDER |Copyright Holder|
+@set DRAFT            @i{ |DRAFT| }
+
+@iftex
+@set DOCUMENT         book
+@set CHAPTER          chapter
+@set APPENDIX         appendix
+@set SECTION          section
+@set SUBSECTION       subsection
+@end iftex
+@ifhtml
+@set DOCUMENT         Web page
+@set CHAPTER          chapter
+@set APPENDIX         appendix
+@set SECTION          section
+@set SUBSECTION       subsection
+@end ifhtml
+@ifinfo
+@set DOCUMENT         Info file
+@set CHAPTER          major node
+@set APPENDIX         major node
+@set SECTION          minor node
+@set SUBSECTION       node
+@end ifinfo
+@ifdocbook
+@set DOCUMENT         book
+@set CHAPTER          chapter
+@set APPENDIX         appendix
+@set SECTION          section
+@set SUBSECTION       subsection
+@end ifdocbook
+
+@c ====================
+@c FINALOUT
+@c ====================
+@c If "finalout" is commented out, the printed output will show
+@c black boxes that mark lines that are too long.  Thus, it is
+@c unwise to comment it out when running a master in case there are
+@c overfulls which are deemed okay.
+
+@iftex
+@c @finalout
+@end iftex
+
+@c ====================
+@c SUMMARY & COPYRIGHT INFORMATION
+@c ====================
+@copying
+@c insert a short summary describing and identifying this document in a
+@c sentence or two, and add the copyright notice and copying permisions
+
+This document is @value{TITLE} @sp 2
+This document does @dots{}
+
+Copyright @copyright{} @value{COPYRIGHT_YEAR} LOLH @*
+by @value{COPYRIGHT_HOLDER} @*
+All Rights Reserved
+
+@quotation
+Permission is granted to @dots{}
+@end quotation
+
+@sp 2
+This is Edition @value{EDITION} of @cite{@value{TITLE}}.
+
+@c use @insertcopying later to 'emit' this copying information in a TeX
+@c or plain text document; add to the Top node for use in Info or HTML file
+@end copying
+
+@c ============================================================================
+@c SEE ==> https://www.thebookdesigner.com/2009/09/parts-of-a-book/
+@c ============================================================================
+
+@c ====================
+@c FRONT MATTER
+@c --------------------
+@c   short title page
+@c   frontspiece
+@c   title page
+@c   copyright page
+@c   Dedication
+@c   Epigraph
+@c   TOC
+@c   list of illustrations (figures, illustrations, maps, etc)
+@c   list of tables
+@c ====================
+
+@ifset FORPRINT
+ @ifset RELEASE
+  @shorttitlepage @value{SHORTTITLE}
+ @end ifset
+@end ifset
+
+@titlepage
+
+@title    @value{TITLE}
+@subtitle @value{SUBTITLE}
+@author   @value{AUTHOR}
+
+@ifnotdocbook
+@c place the copyright information on the backside of the titlepage
+@c (printed manual only)
+@page
+@vskip 0pt plus 1filll
+
+Published by:
+@sp 1
+Publisher @*
+Mailing Address @*
+Email: @EMAIL{publisher@@email.com,publisher AT email.com} @*
+URL: @url{http://www.publisher.com} @*
+
+@insertcopying
+
+@end ifnotdocbook
+@end titlepage
+
+@c page numbering and headings start after end of titlepage
+
+@iftex
+@headings off
+@evenheading @thispage @| @value{DRAFT} @| @strong{@value{SHORTTITLE}}
+@oddheading  @strong{@thischapter} @| @value{DRAFT} @| @thispage
+@end iftex
+
+@c TOC in the printed manual
+@c consider placing TOC after the main menu
+@c consider including summarycontents here or after main menu
+@c @summarycontents
+@contents
+
+@c ====================
+@c TOP NODE
+@c ====================
+@ifnottex
+@ifnotdocbook
+@ifnotxml
+
+@node Top
+@top |Top Description|
+
+@c uncomment for final output
+@c @insertcopying
+@end ifnotxml
+@end ifnotdocbook
+@end ifnottex
+
+@c ====================
+@c MASTER MENU
+@c ====================
+@menu
+@end menu
+
+@c ====================
+@c INTRODUCTORY MATTER:
+@c --------------------
+@c   foreword
+@c   preface
+@c     acknowledgements
+@c     conventions
+@c   overview
+@c   abbreviations
+@c   chronology
+@c ====================
+
+@c ----------------------------------------------------------------------------
+@c Introductory matters come right after Top node in 'unnumbered' chapters and
+@c sections;     ignore    them     until    ready     for    final     output
+@c ----------------------------------------------------------------------------
+@ignore
+
+@node Foreword
+@unnumbered Foreword
+@c ----------------------------------------------------------------------------
+@c A FOREWORD  is usually written  by someone  other than the  author, usually
+@c someone eminent  (to lend  credibility to  the book), and  the name  of the
+@c foreword   writer  normally   appears   at  the   end   of  the   foreword.
+@c ----------------------------------------------------------------------------
+
+Foreward text @dots{}
+
+@node Preface
+@unnumbered Preface
+@c ----------------------------------------------------------------------------
+@c A  PREFACE is  usually written  by the  author.  The  PREFACE and  FOREWORD
+@c usually deal with the genesis, purpose,  limitations, and scope of the book
+@c and may include acknowledgments of indebtedness.  The author may talk about
+@c how he or she came to write the book, especially if that will help draw the
+@c reader into the book.  Perhaps best in the preface, which is also where the
+@c author would talk about  why there is a new edition,  etc.  In other words,
+@c to answer the question: why this book?   why now?  why this person?  why by
+@c this author?  Also  to talk about how  you got the information  — what main
+@c sources (and how  they differ from other  books on the subject,  if this is
+@c book #189  on the Kennedys, for  example); also to provide  a framework for
+@c what's to  follow — the hooks  on which to  hang the pegs of  story details
+@c ----------------------------------------------------------------------------
+
+Preface text @dots{}
+
+@node Acknowledgements
+@unnumberedsec Acknowledgements
+
+Acknowledgments here @dots{}
+
+@node Conventions
+@unnumberedsec Conventions
+
+@c Copied mostly verbatim from the gawk manual.
+
+@cindex Texinfo document formatting language
+This    @value{DOCUMENT}   is    written   in    an   enhanced    version   of
+@uref{http://www.gnu.org/software/texinfo/,  Texinfo},  the GNU  documentation
+formatting language.  A single Texinfo source file is used to produce both the
+printed and online versions of a program's documentation.
+@ifnotinfo
+Because of this, the typographical  conventions are slightly different than in
+other books you may have read.
+@end ifnotinfo
+
+Examples you would  type at the command-line are preceded  by the common shell
+primary and secondary prompts, @samp{$} and  @samp{>}.  Input that you type is
+shown  @kbd{like this}.   Output from  the command  is preceded  by the  glyph
+``@print{}''.  This typically represents the command's standard output.  Error
+messages, and  other output on the  command's standard error, are  preceded by
+the glyph ``@error{}''.  For example:
+
+@example
+$ @kbd{echo hi on stdout}
+@print{} hi on stdout
+$ @kbd{echo hello on stderr 1>&2}
+@error{} hello on stderr
+@end example
+
+@ifnotinfo
+In the  text, command names  appear in  @code{this font}, while  code segments
+appear in the same font and quoted, @samp{like this}.  Options look like this:
+@option{-f}.   Some things  are emphasized  @emph{like this},  and if  a point
+needs  to  be  made  strongly,  it is  done  @strong{like  this}.   The  first
+occurrence of  a new term is  usually its @dfn{definition} and  appears in the
+same  font as  the previous  occurrence  of ``definition''  in this  sentence.
+Finally, file names are indicated like this: @file{/path/to/our/file}.
+@end ifnotinfo
+
+@node Overview
+@unnumbered Overview
+
+Text and chapter by chapter description here.
+
+@end ignore
+
+@c ====================
+@c MAIN BODY NODES
+@c --------------------
+@c   introduction
+@c   prologue
+@c   text
+@c   epilogue
+@c   afterword
+@c   conclusion
+@c ====================
+
+@node Introduction
+@chapter Introduction
+@c ----------------------------------------------------------------------------
+@c An  introduction deals  with the  subject  of the  book, supplementing  and
+@c introducing the text  and indicating a point  of view to be  adopted by the
+@c reader. The  introduction usually forms  a part of  the text [and  the text
+@c numbering        system];        the        preface        does        not.
+@c ----------------------------------------------------------------------------
+
+Introduction @dots{}
+
+@node Prologue
+@chapter Prologue
+
+@c ----------------------------------------------------------------------------
+@c A prologue is  an act, scene, event, or development  that precedes the main
+@c action of  the book. It  may start  the action and  be PART of  the action,
+@c though it could take  place in the middle of the action —  may be a pivotal
+@c moment.   If you  have a  prologue,  you must  also have  an epilogue.   An
+@c epilogue provides comments  outside the main action that  give insight into
+@c what happened. The  main actions in the  book may take place  in one period
+@c and the  reader will  want to  know what happened  afterward. That  kind of
+@c follow-up        could         appear        in         an        epilogue.
+@c ----------------------------------------------------------------------------
+
+@node |Chapter One|
+@chapter |Chapter One|
+@cindex chapter one
+
+Chapter one...
+
+@node |Section One|
+@section |Chapter One Section One|
+@cindex section one
+
+Chapter One Section one...
+
+@c ====================
+@c BACKMATTER
+@c --------------------
+@c   appendices
+@c   glossary
+@c   bibliography
+@c   list of contributors
+@c   indices
+@c   errata
+@c   colophon
+@c   author's biography
+@c ====================
+
+@node Appendix One
+@appendix Appendix One
+
+@node Meta Appendix
+@appendix Meta (Makefile) Appendix
+
+@node Makefile Definitions
+@appendixsec Makefile Initial Definitions
+
+@(Makefile@)=
+@<Makefile Constants@>
+@<Makefile Default Targets@>
+@<Makefile Tangle@>
+@<Makefile Weave@>
+@<Makefile Info@>
+@<Makefile Clean@>
+@<Makefile Dist Clean@>
+@<Makefile Directory Creation@>
+@<Makefile Move Hook@>
+@<Makefile Move JS To Source@>
+@<Makefile Move HTML@>
+@
+
+@node Makefile Constants
+@appendixsubsec Makefile Constant Definitions
+
+@<Makefile Constants@>=
+@<Makefile Directory Definitions@>
+@<Makefile Filename Definitions@>
+@
+
+@node Directory Definitions
+@appendixsubsubsec Makefile Directory Definitions
+
+@<Makefile Directory Definitions@>=
+PREFIX := .
+SOURCE_DIR := ${PREFIX}/src
+PUBLIC_DIR := ${PREFIX}/public
+HTML_DIR := ${PREFIX}/html
+
+@
+
+@node Filename Definitions
+@appendixsubsubsec Makefile Filename Definitions
+
+@<Makefile Filename Definitions@>=
+FILENAME := twjrtemplate
+TWJR_FILENAME := ${FILENAME}.twjr
+TEXI_FILENAME := ${FILENAME}.texi
+INFO_FILENAME := ${FILENAME}.info
+
+@
+
+@node Makefile Default Targets
+@appendixsubsec Makefile Default Targets
+
+@<Makefile Default Targets@>=
+.Phony : all
+all : tangle weave
+
+@
+
+@node Makefile Tangle
+@appendixsubsubsec Makefile Tangle
+
+@<Makefile Tangle@>=
+.Phony : tangle
+tangle :
+	jrtangle ${TWJR_FILENAME}
+
+@
+
+@node Makefile Weave
+@appendixsubsubsec Meta Weave
+
+@<Makefile Weave@>=
+.Phony : weave
+weave : ${TEXI_FILENAME}
+
+${TEXI_FILENAME} : ${TWJR_FILENAME}
+	jrweave ${TWJR_FILENAME} > ${TEXI_FILENAME}
+
+@
+
+@node Makefile Info
+@appendixsubsubsec Makefile Info
+
+@<Makefile Info@>=
+.Phony : info
+info : ${INFO_FILENAME}
+
+${INFO_FILENAME} : ${TEXI_FILENAME}
+	makeinfo ${TEXI_FILENAME}
+
+@
+
+@node Makefile Clean Targets
+@appendixsubsec Makefile Clean Targets
+
+@node Makefile Clean
+@appendixsubsubsec Makefile Clean Definition
+
+@<Makefile Clean@>=
+.Phony : clean
+clean :
+	rm -f *~
+
+@
+
+@node Makefile Dist Clean
+@appendixsubsubsec Meta Dist Clean Definition
+
+@<Makefile Dist Clean@>=
+.Phony : dist-clean
+dist-clean : clean
+	rm -f *.texi
+	rm -f *.info
+
+@
+
+@node Makefile Directory Creation
+@appendixsubsec Makefile Directory Creation Targets
+
+@<Makefile Directory Creation@>=
+.Phony : ${SOURCE_DIR}
+${SOURCE_DIR} :
+	mkdir -p ${SOURCE_DIR}
+
+.Phony : ${PUBLIC_DIR}
+${PUBLIC_DIR} :
+	mkdir -p ${PUBLIC_DIR}
+
+.Phony : ${HTML_DIR}
+${HTML_DIR} :
+	mkdir -p ${HTML_DIR}
+
+@
+
+@node Makefile Move Targets
+@appendixsubsec Makefile Move Targets
+
+@node Makefile Move Hook
+@appendixsubsubsec Makefile Move Hook
+
+Use this hook for moving files to a different directory
+than Source; it will execute just prior to the next
+code block moving all .js files to Source.
+
+@<Makefile Move Hook@>=
+@
+
+@node Makefile Move JS
+@appendixsubsubsec Makefile Move JS To Source
+
+@<Makefile Move JS To Source@>=
+.Phony : move-js-to-source
+move-js-to-source : | ${SOURCE_DIR}
+	find ${PREFIX} -depth=1 -name \*.js -exec mv {} ${SOURCE_DIR} \;
+
+@
+
+@node Makefile Move HTML
+@appendixsubsubsec Makefile Move HTML
+
+@<Makefile Move HTML@>=
+.Phony : move-html
+move-html : | ${HTML_DIR}
+	find ${PREFIX} -depth=1 -name \*.html -exec mv {} ${HTML_DIR}\;
+
+@
+
+@node Code Chunk Summaries
+@appendix Code Chunk Summaries
+
+This @value{APPENDIX} presents alphabetical lists of
+all the file definitions, the code chunk definitions,
+and the code chunk references.
+
+@node File Definitions
+@appendixsec Source File Definitions
+
+@print_file_defs
+
+@node Code Chunk Definitions
+@appendixsec Code Chunk Definitions
+
+@print_code_defs
+
+@node Code Chunk References
+@appendixsec Code Chunk References
+
+@print_code_refs
+
+@c ====================
+@c BIBLIOGRAPHY; INDEX; END
+@c ====================
+
+@node Bibliography
+@unnumbered Bibliography
+
+@node Concept Index
+@unnumbered Index
+
+@node Index
+@unnumbered Index
+
+@printindex cp
+
+@bye
+
+@c ====================
+@c TODOs
+@c ====================
+
+1. Create a script to fill in named variables
+1.1 twjr
+1.1.1 init [--dir <directory>]
+1.1.2 config
+1.1.3 weave [--info --pdf --html --xml --docbook]
+1.1.4 tangle [--file <filename>]
