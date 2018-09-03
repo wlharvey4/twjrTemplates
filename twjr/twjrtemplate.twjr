@@ -2,7 +2,7 @@
 
 @c ============================================================================
 @c NAME:    |TEMPLATE FOR TEXIWEBJR.TWJR FILE|
-@c VERSION: |2018-08-23 VERSION 0.0.5|
+@c VERSION: |2018-09-02 VERSION 0.1.0|
 @c DESC:    |based upon .../texiwebjr/template.twjr|
 @c BY:      LOLH
 @c NOTES:   See 'Writers and Editors',
@@ -13,9 +13,10 @@
 @c header section
 
 @c %**start of header
-@setfilename |twjrtemplate.info|
+@setfilename twjrtemplate.info
 @settitle |TEXIWEBJR TEMPLATE FILE|
-@c @synindex
+@c @defindex commands
+@c @synindex commands
 @c @footnotestyle
 @c %**end of header
 
@@ -28,28 +29,35 @@
 @c   @dquotexrefs	This macro call changes how xref titles are quoted.
 @c   @allowindexbraces	This macro call lets braces in index entries work.
 @c ----------------------------------------------------------------------------
-@c   The follow two are new macro definitions  that can be used by an author in
-@c   a TexiwebJr source document:
+@c   The following two are new macro definitions  that can be used by an author
+@c   in a TexiwebJr source document:
 @c ----------------------------------------------------------------------------
 @c   @EMAIL{real, spelled}  hide email addresses in HTML output (not in TeX):
 @c   @FIXME(text}
-@c   @numberedchecks	    print numbers in the chunk names
+@c   @numberedchecks	    print numbers in chunk names (default unnumbered)
 @c   @pdflinkcolor	    PDF viewer style
 @c   @urllinkcolor	    PDF viewer style
 @c   @hideurls
 @c   @ii{text}
-@c   @TWJR{Program Name}
 @c ============================================================================
-
 @dquotexrefs
 @allowindexbraces
-
-@c chunks are unnumbered by default;
-@c to print numbers in the chunk names,
-@c uncomment this macro call:
-@c ----------------------------------------------------------------------------
 @c @numberedchunks
 
+@c ============================================================================
+@c PRINTING - RELEASE PRINTING
+@c ----------------------------------------------------------------------------
+@c uncommenting these flags affects how printing is done; explained below in
+@c more detail;
+@c ============================================================================
+@clear FORPRINT
+@clear RELEASE
+@c @set FORPRINT 1
+@c @set RELEASE 1
+
+@c ============================================================================
+@c Printing Style (DVI vs PDF)
+@c ----------------------------------------------------------------------------
 @c -DVI printing style (Texinfo default):
 @c   1) URLs shown inline in the text and
 @c   2) cross-references are printed in black
@@ -57,41 +65,48 @@
 @c   both cross-references and URLs are formatted as
 @c   PDF links in a different color
 @c uncomment FORPRINT to set the DVI printing style
-@c ----------------------------------------------------------------------------
-@c @set FORPRINT 1
+@c ============================================================================
 @ifclear FORPRINT
- @pdflinkcolor
- @urllinkcolor
- @hideurls
+@pdflinkcolor
+@urllinkcolor
+@hideurls
 @end ifclear
 
-@c uncomment FORPRINT and RELEASE to print chapters on odd pages
+@c ============================================================================
+@c PRINTING & RELEASING
 @c ----------------------------------------------------------------------------
-@c @set RELEASE
+@c uncomment FORPRINT and RELEASE to print chapters on odd pages and setting
+@c @finalout - prevents black marks from printing to show overfull lines
+@c ============================================================================
 @ifset FORPRINT
- @ifset RELEASE
-  @setchapternewpage odd
- @end ifset
+@ifset RELEASE
+
+@setchapternewpage odd
+
+@iftex
+@finalout
+@end iftex
+
+@end ifset
 @end ifset
 
-@c some special symbols
-@c ----------------------------------------------------------------------------
+@c ============================================================================
+@c SPECIAL INFO MACRO @ii
+@c ============================================================================
 @ifnottex
- @macro ii{text}
-  @i{\text\}
- @end macro
+@macro ii{text}
+@i{\text\}
+@end macro
 @end ifnottex
 
-@c The name of the program.
-@c Setting it as a macro makes it easier to change later.
+@c ============================================================================
+@c MERGE INDICES
 @c ----------------------------------------------------------------------------
-@set TWJR @sc{ |Program Name@:| }
-
 @c merge  the function  and variable  indexes into  the concept  index; do  so
 @c without the  code font,  and in  the index entries  do the  font management
 @c ourselves.  Also merge in the chunk definition and reference entries, which
 @c Jrweave                  creates                   for                  us.
-@c ----------------------------------------------------------------------------
+@c ============================================================================
 @ifnothtml
 @synindex fn cp
 @synindex vr cp
@@ -99,9 +114,10 @@
 @synindex cr cp
 @end ifnothtml
 
-@c ====================
+@c ============================================================================
 @c DOCUMENT CONSTANTS
-@c ====================
+@c ============================================================================
+@set TWJR        @sc{ |Program Name@:| }
 @set TITLE            |Long Title|
 @set SHORTTITLE       |twjrtemplate|
 @set SUBTITLE         |Subtitle|
@@ -109,6 +125,7 @@
 @set UPDATE-MONTH     |MONTH, YYYY|
 @set EDITION          |0.n|
 @set AUTHOR           |Author|
+@set PUBLISHER	      |Publisher|
 @set COPYRIGHT_YEAR   |Year|
 @set COPYRIGHT_HOLDER |Copyright Holder|
 @set DRAFT            @i{ |DRAFT| }
@@ -142,24 +159,15 @@
 @set SUBSECTION       subsection
 @end ifdocbook
 
-@c ====================
-@c FINALOUT
-@c ====================
-@c If "finalout" is commented out, the printed output will show
-@c black boxes that mark lines that are too long.  Thus, it is
-@c unwise to comment it out when running a master in case there are
-@c overfulls which are deemed okay.
-
-@iftex
-@c @finalout
-@end iftex
-
-@c ====================
-@c SUMMARY & COPYRIGHT INFORMATION
-@c ====================
+@c ============================================================================
+@c COPYING - summary & copyright information
+@c ----------------------------------------------------------------------------
+@c Insert a short summary describing and identifying this document in a
+@c sentence or two, and add the copyright notice and copying permisions;
+@c use @insertcopying later to 'emit' this copying information in a TeX
+@c or plain text document; add to the Top node for use in Info or HTML file.
+@c ============================================================================
 @copying
-@c insert a short summary describing and identifying this document in a
-@c sentence or two, and add the copyright notice and copying permisions
 
 This document is @value{TITLE} @sp 2
 This document does @dots{}
@@ -169,23 +177,40 @@ by @value{COPYRIGHT_HOLDER} @*
 All Rights Reserved
 
 @quotation
-Permission is granted to @dots{}
+Permission is granted to read, study, and enjoy this text!
 @end quotation
 
 @sp 2
 This is Edition @value{EDITION} of @cite{@value{TITLE}}.
 
-@c use @insertcopying later to 'emit' this copying information in a TeX
-@c or plain text document; add to the Top node for use in Info or HTML file
 @end copying
 
 @c ============================================================================
-@c SEE ==> https://www.thebookdesigner.com/2009/09/parts-of-a-book/
+@c TEX HEADINGS
 @c ============================================================================
+@iftex
+@headings off
+@evenheading @thispage @| @value{DRAFT} @| @strong{@value{SHORTTITLE}}
+@oddheading  @strong{@thischapter} @| @value{DRAFT} @| @thispage
+@end iftex
 
-@c ====================
-@c FRONT MATTER
-@c --------------------
+@c ****************************************************************************
+@c END OF FORMATTING SECTION
+@c ****************************************************************************
+
+
+
+
+
+
+
+
+
+@c ****************************************************************************
+@c FRONT MATTER CONTENT SECTION (unnumbered pages)
+@c ----------------------------------------------------------------------------
+@c SEE ==> https://www.thebookdesigner.com/2009/09/parts-of-a-book/
+@c ----------------------------------------------------------------------------
 @c   short title page
 @c   frontspiece
 @c   title page
@@ -195,12 +220,29 @@ This is Edition @value{EDITION} of @cite{@value{TITLE}}.
 @c   TOC
 @c   list of illustrations (figures, illustrations, maps, etc)
 @c   list of tables
-@c ====================
+@c ****************************************************************************
 
+@c ============================================================================
+@c TITLE PAGE & COPYRIGHT PAGE
+@c ----------------------------------------------------------------------------
+@c @end title page automatically starts a new page and turns on page numbering;
+@c therefore, all the information you want to appear on unnumered page should
+@c be put between the @titlepage and @end titlepage commands.
+@c You can force the table of contents to be appear there with the
+@c @setcontentsaftertitlepage command.  @page forces a page break.
+@c There are three methods for creating a title page, which may be combined:
+@c 1. @title, @subtitle, @author commands (automatic formatting of text only)
+@c    black rules under title and author lines; subtitle text set flush right
+@c 2. @titlefont, @sp, @center commands
+@c    generates a title page in which the words on the are centered
+@c 3. @shorttitlepage command
+@c    takes the rest of the line as the title, which is typeset on a page by
+@c    itself and followed by a blank page.
+@c ============================================================================
 @ifset FORPRINT
- @ifset RELEASE
-  @shorttitlepage @value{SHORTTITLE}
- @end ifset
+@ifset RELEASE
+@shorttitlepage @value{SHORTTITLE}
+@end ifset
 @end ifset
 
 @titlepage
@@ -217,33 +259,33 @@ This is Edition @value{EDITION} of @cite{@value{TITLE}}.
 
 Published by:
 @sp 1
-Publisher @*
-Mailing Address @*
-Email: @EMAIL{publisher@@email.com,publisher AT email.com} @*
-URL: @url{http://www.publisher.com} @*
+@value{PUBLISHER} @*
+Address: | Mailing Address | @*
+Email:   | @EMAIL{publisher@@email.com,publisher AT email.com} | @*
+URL:     | @url{http://www.publisher.com} | @*
 
 @insertcopying
 
 @end ifnotdocbook
 @end titlepage
 
-@c page numbering and headings start after end of titlepage
-
-@iftex
-@headings off
-@evenheading @thispage @| @value{DRAFT} @| @strong{@value{SHORTTITLE}}
-@oddheading  @strong{@thischapter} @| @value{DRAFT} @| @thispage
-@end iftex
-
-@c TOC in the printed manual
-@c consider placing TOC after the main menu
-@c consider including summarycontents here or after main menu
 @c @summarycontents
-@contents
 
-@c ====================
+@c ****************************************************************************
+@c END OF UNNUMBERED PAGES
+@c ****************************************************************************
+
+
+
+
+
+@c ****************************************************************************
+@c NODES AND SECTIONING
+@c ****************************************************************************
+
+@c ============================================================================
 @c TOP NODE
-@c ====================
+@c ============================================================================
 @ifnottex
 @ifnotdocbook
 @ifnotxml
@@ -257,15 +299,35 @@ URL: @url{http://www.publisher.com} @*
 @end ifnotdocbook
 @end ifnottex
 
-@c ====================
-@c MASTER MENU
-@c ====================
 @menu
 @end menu
 
-@c ====================
-@c INTRODUCTORY MATTER:
-@c --------------------
+@c ============================================================================
+@c TABLE OF CONTENTS (TOC) - LISTS
+@c ----------------------------------------------------------------------------
+@c TOC is placed only in the printed manual;
+@c consider placing TOC after the title page;
+@c ============================================================================
+@contents
+
+@c ============================================================================
+@c LIST OF FLOATS
+@c ----------------------------------------------------------------------------
+@c Add a @listoffloats command to generate a list of floats for a given type
+@c float type.  Typically added to an unnumbered node.
+@c ============================================================================
+@node List of Tables
+@unnumbered List of Tables
+@listoffloats Tables
+
+
+
+@c ============================================================================
+@c INTRODUCTORY MATTER: (unnumbered sections)
+@c ----------------------------------------------------------------------------
+@c Introductory matters come right after Top node in 'unnumbered' chapters and
+@c sections;     ignore    them     until    ready     for    final     output
+@c ----------------------------------------------------------------------------
 @c   foreword
 @c   preface
 @c     acknowledgements
@@ -273,16 +335,12 @@ URL: @url{http://www.publisher.com} @*
 @c   overview
 @c   abbreviations
 @c   chronology
-@c ====================
+@c ============================================================================
 
-@c ----------------------------------------------------------------------------
-@c Introductory matters come right after Top node in 'unnumbered' chapters and
-@c sections;     ignore    them     until    ready     for    final     output
-@c ----------------------------------------------------------------------------
 @ignore
 
 @node Foreword
-@unnumbered Foreword
+@c @unnumbered Foreword
 @c ----------------------------------------------------------------------------
 @c A FOREWORD  is usually written  by someone  other than the  author, usually
 @c someone eminent  (to lend  credibility to  the book), and  the name  of the
@@ -292,7 +350,7 @@ URL: @url{http://www.publisher.com} @*
 Foreward text @dots{}
 
 @node Preface
-@unnumbered Preface
+@c @unnumbered Preface
 @c ----------------------------------------------------------------------------
 @c A  PREFACE is  usually written  by the  author.  The  PREFACE and  FOREWORD
 @c usually deal with the genesis, purpose,  limitations, and scope of the book
@@ -310,12 +368,12 @@ Foreward text @dots{}
 Preface text @dots{}
 
 @node Acknowledgements
-@unnumberedsec Acknowledgements
+@ @unnumberedsec Acknowledgements
 
 Acknowledgments here @dots{}
 
 @node Conventions
-@unnumberedsec Conventions
+@c @unnumberedsec Conventions
 
 @c Copied mostly verbatim from the gawk manual.
 
@@ -354,37 +412,39 @@ Finally, file names are indicated like this: @file{/path/to/our/file}.
 @end ifnotinfo
 
 @node Overview
-@unnumbered Overview
+@c @unnumbered Overview
 
 Text and chapter by chapter description here.
 
 @end ignore
 
-@c ====================
+@c ============================================================================
 @c MAIN BODY NODES
-@c --------------------
+@c ----------------------------------------------------------------------------
 @c   introduction
 @c   prologue
 @c   text
 @c   epilogue
 @c   afterword
 @c   conclusion
-@c ====================
+@c ============================================================================
 
-@node Introduction
-@chapter Introduction
+
+@c ============================================================================
+@c INTRODDUCTION
 @c ----------------------------------------------------------------------------
 @c An  introduction deals  with the  subject  of the  book, supplementing  and
 @c introducing the text  and indicating a point  of view to be  adopted by the
 @c reader. The  introduction usually forms  a part of  the text [and  the text
 @c numbering        system];        the        preface        does        not.
-@c ----------------------------------------------------------------------------
+@c ============================================================================
+@node Introduction
+@chapter Introduction
 
 Introduction @dots{}
 
-@node Prologue
-@chapter Prologue
-
+@c ============================================================================
+@c PROLOGUE
 @c ----------------------------------------------------------------------------
 @c A prologue is  an act, scene, event, or development  that precedes the main
 @c action of  the book. It  may start  the action and  be PART of  the action,
@@ -394,8 +454,18 @@ Introduction @dots{}
 @c what happened. The  main actions in the  book may take place  in one period
 @c and the  reader will  want to  know what happened  afterward. That  kind of
 @c follow-up        could         appear        in         an        epilogue.
-@c ----------------------------------------------------------------------------
+@c ============================================================================
+@c @node Prologue
+@c @chapter Prologue
 
+@c ============================================================================
+@c Numbered SECTIONING
+@c ----------------------------------------------------------------------------
+@c Chapter
+@c   Section
+@c      Subsection
+@c         Subsubsection
+@c ============================================================================
 @node |Chapter One|
 @chapter |Chapter One|
 @cindex chapter one
@@ -408,9 +478,17 @@ Chapter one...
 
 Chapter One Section one...
 
-@c ====================
+@c @node Epilogue
+@c @chapter Epilogue
+
+@c ============================================================================
+@c END SECTIONING
+@c ============================================================================
+
+
+@c ============================================================================
 @c BACKMATTER
-@c --------------------
+@c ----------------------------------------------------------------------------
 @c   appendices
 @c   glossary
 @c   bibliography
@@ -419,16 +497,19 @@ Chapter One Section one...
 @c   errata
 @c   colophon
 @c   author's biography
-@c ====================
+@c ============================================================================
 
+@c ============================================================================
+@c APPENDICES
+@c ============================================================================
 @node Appendix One
-@appendix Appendix One
+@appendix |Appendix @dots{}|
 
-@node Meta Appendix
-@appendix Meta (Makefile) Appendix
+@node The Makefile
+@appendix The Makefile
 
-@node Makefile Definitions
-@appendixsec Makefile Initial Definitions
+@node Makefile Outline
+@appendixsec Makefile Outline
 
 @(Makefile@)=
 @<Makefile Constants@>
@@ -436,6 +517,7 @@ Chapter One Section one...
 @<Makefile Tangle@>
 @<Makefile Weave@>
 @<Makefile Info@>
+@<Makefile PDF@>
 @<Makefile Clean@>
 @<Makefile Dist Clean@>
 @<Makefile Directory Creation@>
@@ -445,7 +527,7 @@ Chapter One Section one...
 @
 
 @node Makefile Constants
-@appendixsubsec Makefile Constant Definitions
+@appendixsec Makefile Constants
 
 @<Makefile Constants@>=
 @<Makefile Directory Definitions@>
@@ -453,7 +535,7 @@ Chapter One Section one...
 @
 
 @node Directory Definitions
-@appendixsubsubsec Makefile Directory Definitions
+@appendixsubsec Makefile Directory Definitions
 
 @<Makefile Directory Definitions@>=
 PREFIX := .
@@ -464,18 +546,25 @@ HTML_DIR := ${PREFIX}/html
 @
 
 @node Filename Definitions
-@appendixsubsubsec Makefile Filename Definitions
+@appendixsubsec Makefile Filename Definitions
 
 @<Makefile Filename Definitions@>=
 FILENAME := twjrtemplate
 TWJR_FILENAME := ${FILENAME}.twjr
 TEXI_FILENAME := ${FILENAME}.texi
 INFO_FILENAME := ${FILENAME}.info
+PDF_FILENAME  := ${FILENAME}.pdf
 
 @
 
-@node Makefile Default Targets
-@appendixsubsec Makefile Default Targets
+@node Makefile Targets
+@appendixsec Makefile Targets
+
+@node Makefile Main Targets
+@appendixsubsec Makefile Main Targets
+
+@node Makefile Default Target
+@appendixsubsubsec Makefile Default Target
 
 @<Makefile Default Targets@>=
 .Phony : all
@@ -494,7 +583,7 @@ tangle :
 @
 
 @node Makefile Weave
-@appendixsubsubsec Meta Weave
+@appendixsubsubsec Makefile Weave
 
 @<Makefile Weave@>=
 .Phony : weave
@@ -517,21 +606,39 @@ ${INFO_FILENAME} : ${TEXI_FILENAME}
 
 @
 
+@node Makefile PDF
+@appendixsubsubsec Makefile PDF
+
+@<Makefile PDF@>=
+.Phony : pdf
+pdf : ${PDF_FILENAME}
+
+${PDF_FILENAME} : ${TEXI_FILENAME}
+	pdftexi2dvi ${TEXI_FILENAME}
+
+.Phony : pdf-open
+pdf-open : ${PDF_FILENAME}
+	open ${PDF_FILENAME}
+
+@
+
 @node Makefile Clean Targets
 @appendixsubsec Makefile Clean Targets
 
 @node Makefile Clean
-@appendixsubsubsec Makefile Clean Definition
+@appendixsubsubsec Makefile Clean
 
 @<Makefile Clean@>=
 .Phony : clean
 clean :
 	rm -f *~
+	rm -f *.??
+	rm -r *.{aux,cps,log,toc}
 
 @
 
 @node Makefile Dist Clean
-@appendixsubsubsec Meta Dist Clean Definition
+@appendixsubsubsec Makefile Dist Clean
 
 @<Makefile Dist Clean@>=
 .Phony : dist-clean
@@ -542,7 +649,7 @@ dist-clean : clean
 @
 
 @node Makefile Directory Creation
-@appendixsubsec Makefile Directory Creation Targets
+@appendixsubsec Makefile Directory Creation
 
 @<Makefile Directory Creation@>=
 .Phony : ${SOURCE_DIR}
@@ -592,6 +699,9 @@ move-html : | ${HTML_DIR}
 
 @
 
+@c ============================================================================
+@c CODE CHUNKS - FILE DEFINITIONS
+@c ============================================================================
 @node Code Chunk Summaries
 @appendix Code Chunk Summaries
 
@@ -614,26 +724,53 @@ and the code chunk references.
 
 @print_code_refs
 
-@c ====================
-@c BIBLIOGRAPHY; INDEX; END
-@c ====================
-
+@c ============================================================================
+@c BIBLIOGRAPHY - INDICES - END
+@c ============================================================================
 @node Bibliography
 @unnumbered Bibliography
 
+@c ============================================================================
+@c CONCEPT INDEX
+@c ----------------------------------------------------------------------------
+@c @cindex <name>
+@c ============================================================================
 @node Concept Index
-@unnumbered Index
-
-@node Index
-@unnumbered Index
+@unnumbered Concept Index
 
 @printindex cp
 
+@c ============================================================================
+@c OTHER INDICES
+@c ----------------------------------------------------------------------------
+@c function index  - @findex (fn)
+@c keystroke index - @kindex (ky)
+@c program index   - @pindex (pg)
+@c datatype index  - @tindex (tp)
+@c variable index  - @vindex (vr)
+@c ----------------------------------------------------------------------------
+@c Define new index: @defindex NAME ==> @NAMEindex
+@c                      e.g. @defindex au ==> @auindex
+@c                      @printindex au
+@c                   @defcodeindex NAME ==> @NAMEindex using @code font
+@c should be defined before a end-of-header line
+@c ============================================================================
+
+@node Keystroke Index
+@unnumbered Keystroke Index
+
+@printindex ky
+
+@node Program Index
+@unnumbered Program Index
+
+@printindex pg
+
 @bye
 
-@c ====================
+@c ============================================================================
 @c TODOs
-@c ====================
+@c ============================================================================
 
 1. Create a script to fill in named variables
 1.1 twjr
