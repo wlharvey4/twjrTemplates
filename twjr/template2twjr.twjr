@@ -1,0 +1,361 @@
+\input texinfo   @c -*-texinfo-*-
+@c template2twjr.twjr version 0.0.1
+
+@c %**start of header
+@setfilename template2twjr.info
+@settitle TWJR Template
+@c %**end of header
+
+@dquotexrefs
+@allowindexbraces
+@ifclear FORPRINT
+@pdflinkcolor
+@urllinkcolor
+@hideurls
+@end ifclear
+
+@set UPDATE-MONTH SEPTEMBER 2018
+@set EDITION Edition 0.1
+@set VERSION Software Version 0.0.1
+
+@set TITLE TWJR Template Creator
+@set SHORTTITLE TWJR Template
+
+@iftex
+@set DOCUMENT book
+@set CHAPTER chapter
+@set APPENDIX appendix
+@set SECTION section
+@set SUBSECTION subsection
+@end iftex
+@ifhtml
+@set DOCUMENT Web page
+@set CHAPTER chapter
+@set APPENDIX appendix
+@set SECTION section
+@set SUBSECTION subsection
+@end ifhtml
+@ifinfo
+@set DOCUMENT Info file
+@set CHAPTER major node
+@set APPENDIX major node
+@set SECTION minor node
+@set SUBSECTION node
+@end ifinfo
+@ifdocbook
+@set DOCUMENT book
+@set CHAPTER chapter
+@set APPENDIX appendix
+@set SECTION section
+@set SUBSECTION subsection
+@end ifdocbook
+
+@ifnottex
+@macro ii{text}
+@i{\text\}
+@end macro
+@end ifnottex
+
+@ifnothtml
+@synindex fn cp
+@synindex vr cp
+@synindex cd cp
+@synindex cr cp
+@end ifnothtml
+
+@iftex
+@c @finalout
+@end iftex
+
+@copying
+@docbook
+<para>Published by:</para>
+
+<literallayout class="normal">Full Name
+Address Line 1
+Address Line 2
+etc.
+Email: <email>user@@example.com</email>
+URL: <ulink url="http://www.example.com/">http://www.example.com/</ulink></literallayout>
+
+<literallayout class="normal">Copyright &copy; YYYY, YYYY
+Full name here
+All Rights Reserved.</literallayout>
+@end docbook
+
+@ifnotdocbook
+Copyright @copyright{} YYYY, YYYY @*
+Full name here @*
+All Rights Reserved.
+@end ifnotdocbook
+@sp 1
+The FOO program is copyright
+@copyright{} YYYY, YYYY by Full name here. It is published under
+the conditions of the GNU General Public License, version 3.
+@sp 2
+This is Edition @value{EDITION} of @cite{@value{TITLE}}.
+@end copying
+
+@c @setchapternewpage odd
+@c @shorttitlepage @value{SHORTTITLE}
+
+@titlepage
+@title @value{TITLE}
+@subtitle @value{EDITION} for @value{VERSION} @value{UPDATE-MONTH}
+@author Full Name here
+
+@ifnotdocbook
+@page
+@vskip 0pt plus 1filll
+
+
+Published by:
+@sp 1
+Full name here @*
+Address Line 1 @*
+Address Line 2 @*
+etc. @*
+Email: @EMAIL{user@@example.com,user AT example.com} @*
+URL: @url{http://www.example.com/} @*
+
+@insertcopying
+@end ifnotdocbook
+@end titlepage
+
+@set DRAFT @i{DRAFT}
+
+@iftex
+@headings off
+@evenheading @thispage @| @value{DRAFT} @| @strong{@value{SHORTTITLE}}
+@oddheading  @strong{@thischapter} @| @value{DRAFT} @| @thispage
+@end iftex
+
+@contents
+
+@ifnottex
+@ifnotdocbook
+@ifnotxml
+
+@node Top
+@top TWJR Template
+
+This file documents a TWJR Template, with descriptions of content
+and options.
+
+@insertcopying
+@end ifnotxml
+@end ifnotdocbook
+@end ifnottex
+
+@majorheading Top Outline
+
+This is the top-level skeletal outline for @file{template2twjr.twjr}.
+
+@(mytemplate.twjr@)=
+\input texinfo @c -*- texinfo -*-
+
+@<TWJR Program Info@>
+@<TWJR Initialization@>
+@<TWJR Frontmatter@>
+@<TWJR Sectioning@>
+@<TWJR Makefile@>
+@<TWJR End@>
+@
+
+@menu
+@detailmenu
+@end detailmenu
+@end menu
+
+@node Preface
+@unnumbered Preface
+
+Preface text here.
+
+@node Overview
+@unnumberedsec What Is Covered
+
+Text and chapter by chapter description here.
+
+@node Introduction
+@chapter Introduction
+
+@node Program Info
+@chapter Program Info
+
+@<TWJR Program Info@>=
+@c =================================================================
+@c NAME:    |TEMPLATE FOR TEXIWEBJR.TWJR FILE|
+@c VERSION: |2018-09-02 VERSION 0.1.0|
+@c DESC:    |based upon .../texiwebjr/template.twjr|
+@c BY:      LOLH
+@c NOTES:   See 'Writers and Editors',
+@c http://www.writersandeditors.com/preface__foreword__or_introduction__57375.htm
+@c =================================================================
+
+@
+
+@node Initialization
+@chapter Initialization
+
+@<TWJR Initialization@>=
+@<TWJR Header@>
+@<TWJR Special Macros@>
+@<TWJR Printing Commands@>
+@<TWJR Merge Indices@>
+@<TWJR Document Constants@>
+@<TWJR Copying@>
+@<TWJR TeX Headings@>
+
+@
+
+@node Header
+@section Header
+
+Any command that affects document formatting as a whole can go into
+the header; this is for running Texinfo on a region.
+
+@itemize
+@item
+@@setfilename: for setting the name of the processed @file{info} file
+@item
+@@settitle: for setting the text to be placed into a page heading
+@item
+@@defindex
+@item
+@@synindex
+@item
+@@setfootnotestyle
+@end itemize
+
+@<TWJR Header@>=
+ @c %**start of header
+ @setfilename twjrtemplate.info
+ @settitle |TEXIWEBJR TEMPLATE FILE|
+ @c %**end of header
+
+@
+
+@node Special Macros
+@section Special Macros
+
+These are additions to the Texinfo language to `ease both the
+formatting job and some of the authoring work.'
+
+@table @b
+@item @@dquotexrefs
+This macro call changes how xref titles are quoted.
+@item @@allowindexbraces
+This macro call lets braces in index entries work.
+@item @@EMAIL@{real, spelled@}
+lets an author hide email addresses in HTML output (not in TeX)
+@item @@FIXME@{text@}
+lets an author note a location to fix
+@item @@numberedchecks
+print numbers in chunk names (default unnumbered)
+@item @@pdflinkcolor
+PDF viewer style
+@item @@urllinkcolor
+PDF viewer style
+@item @@hideurls
+@item @@ii@{text@}
+@end table
+
+@<TWJR Special Macros@>=
+ @dquotexrefs
+ @allowindexbraces
+ @c @numberedchunks
+
+@
+
+@node Printing Commands
+@section Printing Commands
+
+@<TWJR Printing Commands@>=
+@
+
+@node Merge Indices
+@section Merge Indices
+
+@<TWJR Merge Indices@>=
+@
+
+@node Document Constants
+@section Document Constants
+
+@<TWJR Document Constants@>=
+@
+
+@node Copying
+@section Copying
+
+@<TWJR Copying@>=
+@
+
+@node TeX Headings
+@section TeX Headings
+
+@<TWJR TeX Headings@>=
+@
+
+@node Frontmatter
+@chapter Frontmatter
+
+@<TWJR Frontmatter@>=
+@
+
+@node Sectioning
+@chapter Sectioning
+
+@<TWJR Sectioning@>=
+@
+
+@node Makefile
+@chapter Makefile
+
+@<TWJR Makefile@>=
+@
+
+@node End
+@chapter End
+
+@<TWJR End@>=
+@
+
+
+@node First appendix
+@appendix First Appendix Title
+
+@node Code Chunk Summaries
+@appendix Code Chunk Summaries
+
+This @value{APPENDIX} presents alphabetical lists of
+all the file definitions, the code chunk definitions,
+and the code chunk references.
+
+@node File Definitions
+@appendixsec Source File Definitions
+
+@print_file_defs
+
+@node Code Chunk Definitions
+@appendixsec Code Chunk Definitions
+
+@print_code_defs
+
+@node Code Chunk References
+@appendixsec Code Chunk References
+
+@print_code_refs
+
+@node Bibliography
+@unnumbered Bibliography
+
+@node Concept Index
+@unnumbered Index
+
+@printindex cp
+
+@bye
+
+TODO:
