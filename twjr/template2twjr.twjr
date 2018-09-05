@@ -265,13 +265,65 @@ PDF viewer style
  @dquotexrefs
  @allowindexbraces
  @c @numberedchunks
+ @ifnottex
+ @macro ii{text}
+ @i{\text\}
+ @end macro
+ @end ifnottex
 
 @
 
 @node Printing Commands
 @section Printing Commands
 
+Several flags are used to indicate if a TeX output is for printing (dvi) or
+viewing (pdf), or for final release.
+
+The Texinfo default is to prepare for a dvi output, which means:
+
+@itemize
+@item
+@abbr{URL}s are shown inline in the text and
+@item
+cross-references are printed in black
+@end itemize
+
+The @abbr{PDF} viewer style, on the contrary, is the default for a
+@abbr{TWJR} document:
+
+@itemize
+@item
+cross-references and @abbr{URL}s are formatted as @abbr{PDF} links, and
+@item
+in color
+@end itemize
+
+As set, the output will be optimized for viewing.  To prepare for printing,
+set the FORPRINT flag.  To prepare for a final printing, set the RELEASE
+flag.  When both FORPRINT and RELEASE are set, then @@setchapternewpage is
+set to odd, and @@finalout is turned on, thereby preventing overfull boxes
+from printing a black mark.
+
 @<TWJR Printing Commands@>=
+ @clear FORPRINT
+ @clear RELEASE
+ @c @set FORPRINT
+ @c @set RELEASE
+
+ @ifclear FORPRINT
+ @pdflinkcolr
+ @urllinkcolor
+ @hideurls
+ @end ifclear
+
+ @ifset FORPRINT
+ @ifset RELEASE
+ @setchapternewpage odd
+ @iftex
+ @finalout
+ @end iftex
+ @end ifset
+ @end ifset
 @
 
 @node Merge Indices
