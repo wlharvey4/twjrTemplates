@@ -2,7 +2,7 @@
 
 @c %**start of header
 @setfilename twjrdocs.info
-@settitle Documentation for TexiwebJR
+@settitle Documentation for TexiWeb Jr
 @c %**end of header
 
 @c ============================================================================
@@ -22,6 +22,7 @@
 
 @dquotexrefs
 @allowindexbraces
+@xrefautomaticsectiontitle on
 @ifnottex
 @macro ii{text}
 @i{\text\}
@@ -40,7 +41,7 @@
 @hideurls
 @end ifclear
 
-
+@c postcreate
 
 
 
@@ -56,8 +57,8 @@
 
 @set AUTHOR LOLH
 
-@set TITLE Documentation for TexiwebJR
-@set SHORTTITLE TexiwebJR Documentation
+@set TITLE Documentation for TexiWebJr
+@set SHORTTITLE TexiWebJr Documentation
 
 @iftex
 @set DOCUMENT book
@@ -187,8 +188,15 @@ URL: @url{http://www.example.com/} @*
 @node Top
 @top General Introduction
 
-This file documents TexiwebJR, a literate programming system, and produces a
-standard template file.
+This file documents Edition 0.98 of @file{TexiWeb Jr}, a
+@quotation
+A Super Simple Literate Programming System.
+@end quotation
+
+This file also produces version @value{VERSION} of a template file that can
+be used to start a @file{TexiWeb Jr} project (which is based upon but a
+little different than the one provided by the author, based upon my own
+idiosynchrasies).
 
 @insertcopying
 
@@ -293,6 +301,196 @@ in this sentence.  Finally, file names are indicated like this:
 @node Introduction
 @chapter Introduction
 
+@file{TexiWeb Jr} is ``a system that provides literate programming
+ on top of the
+@file{Texinfo} markup language.''  It's source documentation can be found at
+@url{http://github.com/arnoldrobbins/texiwebjr}.  Check it out; it has a
+wealth of information about literate programming in general and this system
+in particular.
+
+It is not my intent to supersede or duplicate or attempt to improve anything
+written by the author of the @file{TexiWeb Jr} system in this document;
+rather, this document and its various forms of output are all designed
+primarily to help me be a better literate programmer and student.
+
+I believe in the value of the literate programming paradigm, and I believe
+in @file{TexiWeb Jr} to that end because it allows me to produce quickly and
+easily various forms of output, including an @file{Info} file with fully
+outlined, hypertexted, and (most importantly) indexed concepts, a @TeX{} PDF
+output, which is fully outlined, hypertexed, and (again) indexed, produce
+runnable, hypertexed, indexed, and documented code using any language or
+combination of languages, and HTML output with all of these attributes that
+can be quickly and easily placed into the Cloud.  All of these combined mean
+that I can be very productive very quickly and retain the benefits of what I
+have learned and produced far into the future, which is very much more than
+plain vanilla programming allows me to do.  Literate programming is probably
+first and foremost a way for me to learn and retain my learning into the
+future.  I can decompose a subject into an @file{Info} file in a matter of
+minutes, and then return any time in the future to update that @file{Info}
+file whenever I come across a similar subject.  There is no other system
+that I am aware of that allows me to learn as quickly and concretely as the
+combined resources of @TeX{}, @file{Info}, @acronym{HTML}, @acronym{PDF},
+and @file{TexiWeb Jr}.
+
+Therefore, this document documents the salient features of the @file{TexiWeb
+Jr} system (i.e., those things that are unique to it) while leaving the
+@file{Texinfo} system to fend for itself.  Certainly, learning the
+@file{Texinfo} system is by far the more important thing to do (and
+certainly is no easy task) but there are some things that are different or
+new in @file{TexiWeb Jr} than in @file{Texinfo} that need to be addressed in
+order to be productive.
+
+There is without a doubt a steep learning curve to being a productive
+literate programmer; there are numerous systems that must be learned, and
+learned well, such as @file{Emacs}, @file{Texinfo}, @file{Info}, @TeX{}, and
+@LaTeX{}, to name the most obvious.  There is also the mental training that
+is required to transform one's methodology from whatever it was to that of
+literate programming.  I am old enough to have gone through several of these
+shifts in my lifetime (moving from writing papers on note paper to
+typewriters to computers using word processors, for one; and moving from
+reading bound books to computer screens to tablet screens to book readers
+for another).  If there is one thing having lived through these transitions
+has taught me, it is the value of striving to keep my mind plastic and
+receptive, and not getting stuck in a paradigm simply because it has become
+comfortable.  Shifting paradigms and learning new systems is hard; but there
+are enormous advantages on the other side.
+
+@node Requirements
+@section System and Knowledge Requirements
+@cindex requirements
+
+In order to process a @file{TexiWeb Jr} source file, and use its @file{Info}
+output, you will need just a couple of requirements:
+
+@itemize
+@item
+Emacs (you really need Emacs to be truly productive using @file{Texinfo}
+and @file{Info})
+@item
+GNU AWK (@file{gawk} version 4.0 or later) because that is the program that
+powers both @command{jrtangle} and @command{jrweave}
+@item
+@file{Texinfo} of at least version 6.1
+@item
+@file{Info} (knowledge of how to navigate through an @file{Info} file is
+crucial to using the power of @file{Info} to learn and retain learning)
+@end itemize
+
+@node Literate Programming
+@section Literate Programming
+@cindex literate programming
+
+For some general introductions and information about the Literate Programming world, see, for
+example:
+
+@itemize
+@item
+Wikipedia's Wiki on Literate Programming
+(@uref{https://en.wikipedia.org/wiki/Literate_programming}) 
+@item
+@uref{https://www.cs.tufts.edu/~nr/noweb/}
+@item
+Ben Pfaff's @file{TexiWEB} system for @file{C} language literate
+programming;
+@itemize
+@item
+see @uref{http://adtinfo.org} for the HTML output;
+@item
+for a PDF of the textbook, @uref{https://ftp.gnu.org/gnu/avl/avl-2.0.2.pdf.gz}
+@item
+see @uref{https://github.com/CoryXie/libavl} for source code on GitHub;
+@item
+see @uref{http://savannah.gnu.org/projects/avl} for source code on Savannah.
+@item
+see @uref{http://adtinfo.org/poster/index.html} for a diamond exposition of
+both what literate programming is and where it can be most effective, i.e.,
+in retaining knowledge
+@end itemize
+@end itemize
+
+@node @file{TexiWEB} System
+@section Ben Pfaff's @file{TexiWEB} System
+
+I am fully aware of how devisive this topic is amongst programmers.  As
+Donald Knuth said way back when he coined the phrase, he knew it was a
+loaded term, because who wants to be accussed of being a proponent of
+Illiterate Programming?  Donald Knuth said he was a better programmer
+because of it, and others have said the same.  For me, it is as much about
+learning a system that helps me retain what I have studied and torn apart as
+it is about being a better programmer.  In the end, if I do not know how to
+program well, being literate about it is really meaningless.  So, for me,
+literate programming is a system that I believe will help me become a better
+programmer faster.  That is good enough for me.
+
+Because Ben Pfaff's exposition on literate programming influenced me so much
+to pick up literate programming, I take the privilege of placing several
+portions of his writings on the subject here.  Pay particular attention
+to the bolded text in the second section.  These are both from
+@uref{http://adtinfo.org/poster/index.html}.
+
+@heading What is a Literate Program? (by Ben Pfaff)
+
+A @dfn{literate program} is intended to be useful, as is all software. But a
+literate program is also intended to be a work of technical literature that
+explains the program's inner workings. A literate program is at the same a
+functional design and an essay that describes that design.
+
+The ideas behind literate programming date back to at least the 1960s, but
+credit for its popularization is due to eminent computer scientist Donald
+Knuth, who coined the name itself in his 1984 article ``Literate
+Programming.''
+
+The benefits of literate programming are numerous. Literate programs tend to
+have good organization and design because of the need to justify decisions
+to readers. They can be easier to maintain because reasons for design
+decisions are clear. They can be easier to write because of the enhanced
+ability, available with most literate programming systems, to write code in
+the order most convenient for the programmer, instead of that most suitable
+for the compiler.
+
+Literate programming does have some drawbacks.  The most apparent is that it
+requires  additional  skills  on  the  part of  the  programmer.  Not  every
+programmer  is  also  a  talented  essayist, but  some  writing  ability  is
+necessary to be an effective literate programmer.
+
+The most well-known examples of literate programs are @TeX{} and METAFONT by
+Knuth himself. Taken as literature, both of these programs are published in
+book form as well as available electronically. Taken as software, they are
+commonly used for publishing articles and textbooks, especially those
+containing mathematics.
+
+@heading Libavl 2.0: A Literate Balanced Tree Library (By Ben Pfaff)
+
+The original version of @file{libavl} worked well, as evidenced by its use
+in several programs.
+
+@noindent@strong{But over time it turned out that the knowledge that it embodied was
+as important as the actual code. That is, the code itself is a realization
+of one way to manipulate a few kinds of balanced trees, but it gives few
+hints of the reasons for trade-offs made during its design or how to
+construct similar libraries given different priorities. Reasons to build
+new, similar libraries kept cropping up, but each time much of the rationale
+behind libavl had to be rediscovered, even by its original author. The
+needed information was scattered among books, papers, and online sources.}
+
+Eventually, a solution presented itself: rewrite @file{libavl} as a literate
+program! Upon investigation, this idea came to look better and better. Early
+in 2000, the rewrite began. This rewrite is still underway, but considerable
+progress has been made. A development version of the rewritten work from
+December 2000 is included in the binder by this poster. A considerably newer
+edition exists, but this is the latest fully self-consistent version.
+
+The first step in writing @file{libavl 2.0} was to decide on a literate
+programming system. Several of these exist. Eventually, it was determined
+that none of them exactly met @file{libavl}'s needs. As a result,
+@file{libavl} uses its own custom literate programming system, called
+@file{TexiWEB}. This name is taken by combining `Texinfo', the publishing
+system that TexiWEB is based on, with `WEB', Knuth's own literate
+programming system.
+
+
+
+@c ----------------------------------------------------------------------------
 @node Next chapter
 @chapter Next Chapter Title
 
